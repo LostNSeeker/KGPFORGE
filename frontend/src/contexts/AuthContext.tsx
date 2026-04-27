@@ -1,0 +1,209 @@
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import type { ReactNode } from 'react'
+import { getApiUrl } from '../config'
+
+interface User {
+  id: number
+  email: string
+  name: string
+  role: 'student' | 'alumni' | 'founder' | 'mentor' | 'investor' | 'admin'
+  graduation_year?: number
+  department?: string
+  is_approved?: boolean
+  is_blocked?: boolean
+  alumni_type?: string
+  profile?: {
+    bio?: string
+    skills?: string[]
+    company?: string
+    position?: string
+  }
+}
+
+interface AuthContextType {
+  user: User | null
+  token: string | null
+  login: (email: string, password: string, setError?: (msg: string) => void) => Promise<boolean>
+  register: (userData: RegisterData) => Promise<boolean>
+  refreshUser: () => Promise<User | null>
+  loginWithToken: (token: string, user: User) => void
+  logout: () => void
+  isLoading: boolean
+}
+
+interface RegisterData {
+  name: string
+  email: string
+  password: string
+  role: 'student' | 'alumni' | 'founder' | 'mentor' | 'investor'
+  graduation_year?: number
+  department?: string
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}
+
+interface AuthProviderProps {
+  children: ReactNode
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const fetchLatestUser = useCallback(async (authToken: string): Promise<User | null> => {
+    try {
+      const response = await fetch(getApiUrl('/api/auth/me'), {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      if (!response.ok) {
+        return null
+      }
+      const data = await response.json()
+      const latestUser = data.user as User
+      setUser(latestUser)
+      localStorage.setItem('user', JSON.stringify(latestUser))
+      return latestUser
+    } catch (error) {
+      console.error('AuthContext - Failed to refresh user:', error)
+      return null
+    }
+  }, [])
+
+  useEffect(() => {
+    // Check for stored token on app load
+    const storedToken = localStorage.getItem('token')
+    const storedUser = localStorage.getItem('user')
+    
+    if (storedToken && storedUser) {
+      try {
+        const userData = JSON.parse(storedUser)
+        setToken(storedToken)
+        setUser(userData)
+        fetchLatestUser(storedToken)
+      } catch (error) {
+        console.error('AuthContext - Error parsing stored user data:', error)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+      }
+    }
+    setIsLoading(false)
+  }, [])
+
+  const login = async (email: string, password: string, setError?: (msg: string) => void): Promise<boolean> => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(getApiUrl('/api/auth/login'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Check if admin OTP is required
+        if (data.otp_required) {
+          setError?.('Admin accounts must use the Admin Login page.')
+          setTimeout(() => {
+            window.location.href = '/admin/login'
+          }, 1500)
+          return false
+        }
+        setToken(data.token)
+        setUser(data.user)
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        return true
+      } else {
+        const errorData = await response.json()
+        console.error('Login failed:', errorData.error)
+        setError?.(errorData.error)
+        return false
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      return false
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const register = async (userData: RegisterData): Promise<boolean> => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(getApiUrl('/api/auth/register'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        if (data.token) {
+          setToken(data.token)
+          localStorage.setItem('token', data.token)
+        } else {
+          setToken(null)
+          localStorage.removeItem('token')
+        }
+
+        setUser(data.user)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        return true
+      } else {
+        const errorData = await response.json()
+        console.error('Registration failed:', errorData.error)
+        return false
+      }
+    } catch (error) {
+      console.error('Registration error:', error)
+      return false
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const loginWithToken = (newToken: string, newUser: User) => {
+    setToken(newToken)
+    setUser(newUser)
+    localStorage.setItem('token', newToken)
+    localStorage.setItem('user', JSON.stringify(newUser))
+  }
+
+  const logout = () => {
+    setUser(null)
+    setToken(null)
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+  }
+
+  const refreshUser = useCallback(async (): Promise<User | null> => {
+    if (!token) return null
+    return fetchLatestUser(token)
+  }, [fetchLatestUser, token])
+
+  const value: AuthContextType = {
+    user,
+    token,
+    login,
+    register,
+    refreshUser,
+    loginWithToken,
+    logout,
+    isLoading,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}

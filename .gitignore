@@ -1,0 +1,69 @@
+# ------------------------------
+# OS / Editor
+# ------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ------------------------------
+# Logs
+# ------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ------------------------------
+# Environment / Secrets
+# ------------------------------
+.env
+.env.*
+!.env.example
+
+# ------------------------------
+# Python (backend)
+# ------------------------------
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+venv/
+.venv/
+backend/venv/
+
+# ------------------------------
+# Node / Frontend
+# ------------------------------
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+*.tsbuildinfo
+
+# ------------------------------
+# Build / Temp
+# ------------------------------
+build/
+tmp/
+temp/
+*.tmp
+
+# ------------------------------
+# Project-specific runtime files
+# ------------------------------
+backend/launchpad.db
+backend/uploads/
+backend/backend.log
+backend/project.zip
