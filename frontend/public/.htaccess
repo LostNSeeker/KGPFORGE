@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Reverse Proxy for the Backend API
+  # Any request to /api/... will be forwarded to your Python backend running on port 5110
+  RewriteRule ^api/(.*)$ http://127.0.0.1:5110/api/$1 [P,L]
+
+  # 2. Single Page Application (SPA) Routing for React Router
+  # If a file or folder doesn't exist, serve index.html (fixes /login 404s)
+  RewriteCond %{REQUEST_URI} !^/api
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
