@@ -590,6 +590,124 @@ def init_db():
     except:
         pass
 
+    # Projects table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS projects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT NOT NULL,
+            category TEXT NOT NULL,
+            status TEXT DEFAULT 'active' CHECK (status IN ('active', 'completed', 'paused')),
+            team_members TEXT,
+            tags TEXT,
+            created_by INTEGER NOT NULL,
+            skills_required TEXT,
+            is_recruiting BOOLEAN DEFAULT 1,
+            images TEXT,
+            project_links TEXT,
+            jd_pdf TEXT,
+            contact_details TEXT,
+            team_roles TEXT,
+            partners TEXT,
+            funding TEXT,
+            highlights TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (created_by) REFERENCES users (id)
+        )
+    ''')
+
+    # Project Positions table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS project_positions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            description TEXT,
+            required_skills TEXT,
+            count INTEGER DEFAULT 1,
+            filled_count INTEGER DEFAULT 0,
+            is_active BOOLEAN DEFAULT 1,
+            stipend REAL,
+            duration TEXT,
+            location TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (project_id) REFERENCES projects (id)
+        )
+    ''')
+
+    # Project Applications table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS project_applications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_id INTEGER NOT NULL,
+            position_id INTEGER NOT NULL,
+            student_id INTEGER NOT NULL,
+            message TEXT,
+            status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined')),
+            has_team BOOLEAN DEFAULT 0,
+            feedback TEXT,
+            completed_at TIMESTAMP,
+            is_completed BOOLEAN DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (project_id) REFERENCES projects (id),
+            FOREIGN KEY (position_id) REFERENCES project_positions (id),
+            FOREIGN KEY (student_id) REFERENCES users (id)
+        )
+    ''')
+
+    # Blog Posts table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS blog_posts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            category TEXT,
+            author_id INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (author_id) REFERENCES users (id)
+        )
+    ''')
+
+    # Blog Likes table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS blog_likes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            blog_post_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (blog_post_id) REFERENCES blog_posts (id),
+            FOREIGN KEY (user_id) REFERENCES users (id),
+            UNIQUE(blog_post_id, user_id)
+        )
+    ''')
+
+    # Conversations table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS conversations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user1_id INTEGER NOT NULL,
+            user2_id INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user1_id) REFERENCES users (id),
+            FOREIGN KEY (user2_id) REFERENCES users (id),
+            UNIQUE(user1_id, user2_id)
+        )
+    ''')
+
+    # Messages table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sender_id INTEGER NOT NULL,
+            receiver_id INTEGER NOT NULL,
+            content TEXT NOT NULL,
+            is_read BOOLEAN DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (sender_id) REFERENCES users (id),
+            FOREIGN KEY (receiver_id) REFERENCES users (id)
+        )
+    ''')
+
     conn.commit()
     conn.close()
 
