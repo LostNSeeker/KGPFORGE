@@ -97,8 +97,8 @@ def create_user(user_data):
     try:
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO users (name, email, password_hash, role, graduation_year, department, is_approved)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO users (name, email, password_hash, role, graduation_year, department, phone, is_approved)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             user_data['name'],
             user_data['email'],
@@ -106,6 +106,7 @@ def create_user(user_data):
             user_data['role'],
             user_data.get('graduation_year'),
             user_data.get('department'),
+            user_data.get('phone'),
             user_data.get('is_approved', True)
         ))
         conn.commit()

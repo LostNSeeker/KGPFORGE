@@ -8,7 +8,7 @@ import { Label } from '../components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Alert, AlertDescription } from '../components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select'
-import { Eye, EyeOff, Loader2, User, Mail, Lock } from 'lucide-react'
+import { Eye, EyeOff, Loader2, User, Mail, Lock, Phone } from 'lucide-react'
 import logo from "../images/logo.png";
 
 // Boxes Background Component
@@ -86,6 +86,7 @@ export const RegisterPage = () => {
   const [formData, setFormData] = useState<{
     name: string;
     email: string;
+    phone: string;
     password: string;
     confirmPassword: string;
     role: 'student' | 'founder' | 'mentor' | 'investor';
@@ -94,6 +95,7 @@ export const RegisterPage = () => {
   }>({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
     role: 'student',
@@ -131,8 +133,14 @@ export const RegisterPage = () => {
     e.preventDefault()
     setError('')
 
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.name || !formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
       setError('Please fill in all required fields')
+      return
+    }
+
+    const cleanedPhone = formData.phone.replace(/\D/g, '')
+    if (cleanedPhone.length !== 10) {
+      setError('Please enter a valid 10-digit Indian phone number')
       return
     }
 
@@ -154,6 +162,7 @@ export const RegisterPage = () => {
     const success = await register({
       name: formData.name,
       email: formData.email,
+      phone: `+91${cleanedPhone}`,
       password: formData.password,
       role: formData.role,
       graduation_year: formData.graduationYear ? parseInt(formData.graduationYear) : undefined,
@@ -263,6 +272,24 @@ export const RegisterPage = () => {
                     placeholder="Enter your email"
                     className="pl-10 bg-white/70 border-blue-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
                   />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-gray-700">Phone Number (India)</Label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="10-digit mobile number"
+                    className="pl-10 bg-white/70 border-blue-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
+                  />
+                  <span className="absolute right-3 top-3 text-xs text-gray-500">+91</span>
                 </div>
               </div>
 

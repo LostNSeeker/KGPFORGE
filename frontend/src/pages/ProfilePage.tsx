@@ -288,6 +288,30 @@ export const ProfilePage: React.FC = () => {
     }
   }
 
+  const handleDeletePicture = async () => {
+    if (!token || !confirm('Are you sure you want to delete your profile picture?')) return
+    try {
+      const res = await fetch(getApiUrl('/api/profile/picture'), {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (res.ok) {
+        const profileRes = await fetch(getApiUrl('/api/profile'), {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (profileRes.ok) {
+          const profileData = await profileRes.json()
+          setProfile(profileData)
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting picture:', error)
+      alert('Error deleting profile picture')
+    }
+  }
+
   const handleDeleteCV = async () => {
     if (!token || !confirm('Are you sure you want to delete your CV?')) return
 
@@ -458,6 +482,20 @@ export const ProfilePage: React.FC = () => {
                     </div>
                   </label>
                 </div>
+                {currentProfile.avatar && (
+                  <div className="absolute -bottom-2 -left-2">
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="destructive"
+                      className="h-8 w-8 rounded-full shadow-md"
+                      onClick={handleDeletePicture}
+                      title="Delete profile picture"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
               <div className="flex-1 text-center md:text-left">
                 <h1 className="text-4xl font-bold mb-2">{currentProfile.name}</h1>

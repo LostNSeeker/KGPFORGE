@@ -24,7 +24,7 @@ def register():
     data = request.get_json()
 
     # Validate required fields
-    required_fields = ['name', 'email', 'password', 'role']
+    required_fields = ['name', 'email', 'phone', 'password', 'role']
     for field in required_fields:
         if not data.get(field):
             return jsonify({'error': f'{field} is required'}), 400
@@ -53,6 +53,7 @@ def register():
         user_data = {
             'name': data['name'],
             'email': data['email'],
+            'phone': data['phone'],
             'password_hash': password_hash,
             'role': data['role'],
             'graduation_year': data.get('graduation_year'),

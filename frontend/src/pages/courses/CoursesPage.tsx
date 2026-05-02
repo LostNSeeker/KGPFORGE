@@ -329,8 +329,8 @@ export const CoursesPage: React.FC = () => {
                         <p className="text-purple-100 mb-8 max-w-2xl mx-auto">
                             Join thousands of students already learning on our platform. Get access to expert-led courses and start building your skills today.
                         </p>
-                        <Button size="lg" className="bg-white text-purple-600 hover:bg-purple-50 px-8 py-6 text-lg font-semibold rounded-xl">
-                            Explore All Courses
+                        <Button size="lg" className="bg-white text-purple-600 hover:bg-purple-50 px-8 py-6 text-lg font-semibold rounded-xl" asChild>
+                            <Link to="/courses">Explore All Courses</Link>
                         </Button>
                     </motion.div>
                 </div>

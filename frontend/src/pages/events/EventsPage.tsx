@@ -91,6 +91,7 @@ export const EventsPage: React.FC = () => {
     const [selectedType, setSelectedType] = useState<string>('All')
     const [searchQuery] = useState('')
     const [email, setEmail] = useState('')
+    const isPastEvent = (eventDate: string) => new Date(eventDate) < new Date(new Date().toDateString())
 
     const resolveImageUrl = (value?: string | null, fallback?: string) => {
         if (!value) return fallback || ''
@@ -120,6 +121,12 @@ export const EventsPage: React.FC = () => {
     }, [token])
 
     const handleEnroll = async (eventId: number) => {
+        const event = events.find(e => e.id === eventId)
+        if (event && isPastEvent(event.date)) {
+            toast.error('This event has already ended')
+            return
+        }
+
         if (!token) {
             toast.error('Please login to register')
             return
@@ -394,6 +401,10 @@ export const EventsPage: React.FC = () => {
                                                 {event.is_enrolled ? (
                                                     <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                                                         Registered
+                                                    </Badge>
+                                                ) : isPastEvent(event.date) ? (
+                                                    <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300">
+                                                        Event Ended
                                                     </Badge>
                                                 ) : (
                                                     <Button 

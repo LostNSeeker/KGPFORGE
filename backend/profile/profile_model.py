@@ -101,6 +101,22 @@ def update_user_avatar(user_id, filename):
     finally:
         conn.close()
 
+def get_user_avatar(user_id):
+    conn = get_db_connection()
+    try:
+        row = conn.execute('SELECT avatar FROM users WHERE id = ?', (user_id,)).fetchone()
+        return row['avatar'] if row else None
+    finally:
+        conn.close()
+
+def clear_user_avatar(user_id):
+    conn = get_db_connection()
+    try:
+        conn.execute('UPDATE users SET avatar = NULL WHERE id = ?', (user_id,))
+        conn.commit()
+    finally:
+        conn.close()
+
 def get_user_cv(user_id):
     conn = get_db_connection()
     try:

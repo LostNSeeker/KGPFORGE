@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required
 from core_middleware import get_user_id_from_jwt
 from .profile_model import (
     get_user_data, update_user_profile, update_user_avatar,
-    get_user_cv, update_user_cv, clear_user_cv,
+    get_user_cv, update_user_cv, clear_user_cv, get_user_avatar, clear_user_avatar,
     update_student_verification_data, get_dashboard_stats
 )
 
@@ -68,12 +68,32 @@ def upload_profile_picture():
     file.save(file_path)
     
     try:
+        old_avatar = get_user_avatar(user_id)
         update_user_avatar(user_id, unique_filename)
+        if old_avatar and old_avatar != unique_filename:
+            old_path = os.path.join(current_app.config['UPLOAD_FOLDER'], old_avatar)
+            if os.path.exists(old_path):
+                os.remove(old_path)
         return jsonify({
             'message': 'Profile picture uploaded successfully',
             'filename': unique_filename,
             'url': f'/api/profile/picture/{unique_filename}'
         }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@profile_bp.route('/picture', methods=['DELETE'])
+@jwt_required()
+def delete_profile_picture():
+    user_id = get_user_id_from_jwt()
+    try:
+        avatar_filename = get_user_avatar(user_id)
+        if avatar_filename:
+            filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], avatar_filename)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            clear_user_avatar(user_id)
+        return jsonify({'message': 'Profile picture deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

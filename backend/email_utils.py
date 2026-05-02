@@ -3,18 +3,23 @@ import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.gmail.com')
-SMTP_PORT = int(os.environ.get('SMTP_PORT', 587))
-SMTP_USER = os.environ.get('SMTP_USER', '')
-SMTP_PASS = os.environ.get('SMTP_PASS', '')
+SMTP_HOST = (os.environ.get('SMTP_HOST') or 'smtp.gmail.com').strip()
+SMTP_PORT = int((os.environ.get('SMTP_PORT') or '587').strip())
+SMTP_USER = (os.environ.get('SMTP_USER') or '').strip()
+# Gmail App Passwords are 16 chars; Google often shows them with spaces — strip those too.
+SMTP_PASS = (os.environ.get('SMTP_PASS') or '').strip().replace(' ', '')
 FROM_NAME = os.environ.get('FROM_NAME', 'KGP Launchpad')
 
-ADMIN_EMAIL = 'Akshat2k24@gmail.com'
+# Where admin OTP emails are delivered. Can differ from `users.email` for the admin row.
+# If unset, falls back to SMTP_USER (typical: same Gmail you use for SMTP).
+_admin_mail = (os.environ.get('ADMIN_EMAIL') or '').strip()
+_smtp_user_fallback = (os.environ.get('SMTP_USER') or '').strip()
+ADMIN_EMAIL = _admin_mail or _smtp_user_fallback or 'Akshat2k24@gmail.com'
 
 
 def send_admin_otp(otp: str) -> bool:
     """
-    Send a 6-digit OTP to the hardcoded admin email address.
+    Send a 6-digit OTP to ADMIN_EMAIL (see env: ADMIN_EMAIL or SMTP_USER).
     Returns True on success, False on failure.
     """
     if not SMTP_USER or not SMTP_PASS:

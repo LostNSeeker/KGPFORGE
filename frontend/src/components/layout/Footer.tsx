@@ -20,7 +20,6 @@ const data = {
   twitterLink: '#',
   githubLink: '#',
   platform: {
-    projects: '/projects',
     register: '/register',
     messages: '/messages',
     launchpad: '/launchpad',
@@ -62,7 +61,6 @@ const aboutLinks = [
 ];
 
 const platformLinks = [
-  { text: 'Projects', href: data.platform.projects },
   { text: 'Launchpad', href: data.platform.launchpad },
   { text: 'Register', href: data.platform.register },
   { text: 'Messages', href: data.platform.messages },

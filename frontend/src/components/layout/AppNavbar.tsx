@@ -82,7 +82,6 @@ export const AppNavbar: React.FC = () => {
         { name: 'Dashboard', link: '/dashboard' },
         { name: 'LaunchDeck', link: '/launchdeck' },
         { name: 'Ask Services', link: '/launchpad' },
-        { name: 'Resources', link: '/resources' },
         { name: 'Events', link: '/events' },
         { name: 'Messages', link: '/messages' },
       ]
@@ -90,7 +89,6 @@ export const AppNavbar: React.FC = () => {
       return [
         { name: 'Dashboard', link: '/dashboard' },
         { name: 'Service Profile', link: '/student-service-profile' },
-        { name: 'Resources', link: '/resources' },
         { name: 'Courses', link: '/courses' },
         { name: 'Events', link: '/events' },
         { name: 'Messages', link: '/messages' },

@@ -18,6 +18,7 @@ export const EventDetailPage: React.FC = () => {
     const [loading, setLoading] = useState(true)
     const [enrolling, setEnrolling] = useState(false)
     const [email, setEmail] = useState('')
+    const isPastEvent = event ? new Date(event.date) < new Date(new Date().toDateString()) : false
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -59,6 +60,11 @@ export const EventDetailPage: React.FC = () => {
     }, [id, token, navigate])
 
     const handleEnroll = async () => {
+        if (isPastEvent) {
+            toast.error('This event has already ended')
+            return
+        }
+
         if (!token) {
             toast.error('Please login to register')
             navigate('/login')
@@ -309,6 +315,10 @@ export const EventDetailPage: React.FC = () => {
                                         {event.is_enrolled ? (
                                             <Button className="w-full bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/30" disabled>
                                                 ✓ Already Registered
+                                            </Button>
+                                        ) : isPastEvent ? (
+                                            <Button className="w-full bg-gray-700 text-gray-300 border border-gray-600" disabled>
+                                                EVENT ENDED
                                             </Button>
                                         ) : (
                                             <Button 

@@ -1,4 +1,5 @@
 from database import get_db_connection
+from datetime import datetime
 
 def is_admin(user_id):
     conn = get_db_connection()
@@ -119,6 +120,14 @@ def update_event(user_id, event_id, data):
 def enroll_event(user_id, event_id):
     conn = get_db_connection()
     try:
+        event = conn.execute('SELECT date FROM events WHERE id = ?', (event_id,)).fetchone()
+        if not event:
+            return False, "Event not found", 404
+
+        event_date = datetime.fromisoformat(event['date']).date()
+        if event_date < datetime.now().date():
+            return False, "Cannot enroll in past events", 400
+
         existing = conn.execute('SELECT id FROM event_enrollments WHERE user_id = ? AND event_id = ?', (user_id, event_id)).fetchone()
         if existing: return False, "Already enrolled", 400
             

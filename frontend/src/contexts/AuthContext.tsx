@@ -34,6 +34,7 @@ interface AuthContextType {
 interface RegisterData {
   name: string
   email: string
+  phone: string
   password: string
   role: 'student' | 'alumni' | 'founder' | 'mentor' | 'investor'
   graduation_year?: number
