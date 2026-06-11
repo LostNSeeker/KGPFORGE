@@ -50,7 +50,7 @@ export function AboutPage() {
             {/* Slide 1: About KGP Forge — image background */}
             <div className="relative w-full min-h-[70vh] flex items-center justify-center">
               <img
-                src="https://images.unsplash.com/photo-1597040619264-4a222e784d38?w=1920&auto=format&fit=crop"
+                src="https://www.ecell-iitkgp.in/assets/thumbnail5-peRn5kn_.jpg"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
                 aria-hidden
@@ -72,7 +72,7 @@ export function AboutPage() {
             {/* Slide 2: Founders & Students */}
             <div className="relative w-full min-h-[70vh] flex items-center justify-center">
               <img
-                src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&auto=format&fit=crop"
+                src="https://www.ecell-iitkgp.in/assets/Aboutus-Br4Mxt4u.jpeg"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
                 aria-hidden
@@ -94,7 +94,7 @@ export function AboutPage() {
             {/* Slide 3: Community First */}
             <div className="relative w-full min-h-[70vh] flex items-center justify-center">
               <img
-                src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&auto=format&fit=crop"
+                src="https://www.ecell-iitkgp.in/assets/work_6_md-DsmfKfjs.jpg"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
                 aria-hidden
@@ -116,7 +116,7 @@ export function AboutPage() {
             {/* Slide 4: Our Network */}
             <div className="relative w-full min-h-[70vh] flex items-center justify-center">
               <img
-                src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1920&auto=format&fit=crop"
+                src="https://www.ecell-iitkgp.in/assets/work_8_md-DNZ34xPc.jpg"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
                 aria-hidden
@@ -179,28 +179,28 @@ export function AboutPage() {
                   </p>
                   <div className="grid grid-cols-2 gap-4">
                     <img
-                      src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_1_md-DT05Q56C.jpg"
                       alt="Team collaboration"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_2_md-DJ9TZPw4.jpg"
                       alt="Community"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1513258496099-48168024aec0?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_3_md-AgNFOjw6.jpg"
                       alt="Startup"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_4_full-D48PtG3O.jpg"
                       alt="Workspace"
                       width={500}
                       height={500}
@@ -223,28 +223,28 @@ export function AboutPage() {
                   </p>
                   <div className="grid grid-cols-2 gap-4">
                     <img
-                      src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_5_md-DTM-utum.jpg"
                       alt="Analytics"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_6_md-DsmfKfjs.jpg"
                       alt="Events"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_7_a_md-CQyh96oU.jpg"
                       alt="Knowledge"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1542596594-649edbc13630?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_8_md-DNZ34xPc.jpg"
                       alt="Meeting"
                       width={500}
                       height={500}
@@ -286,28 +286,28 @@ export function AboutPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <img
-                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_9_a_md-COQfNM1A.jpg"
                       alt="Office"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/Aboutus-Br4Mxt4u.jpeg"
                       alt="Collaboration"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/thumbnail5-peRn5kn_.jpg"
                       alt="Team"
                       width={500}
                       height={500}
                       className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-lg border border-slate-100"
                     />
                     <img
-                      src="https://images.unsplash.com/photo-1552581234-26160f608093?w=500&auto=format&fit=crop"
+                      src="https://www.ecell-iitkgp.in/assets/work_3_md-AgNFOjw6.jpg"
                       alt="Workshop"
                       width={500}
                       height={500}
