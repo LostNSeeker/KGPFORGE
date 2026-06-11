@@ -54,6 +54,7 @@ const AUTO_ADVANCE_MS = 3000
 
 export const HowItWorksSection: React.FC = () => {
   const [activeStep, setActiveStep] = useState(STEPS[0].id)
+  const [isPaused, setIsPaused] = useState(false)
   const activeStepData = STEPS.find(step => step.id === activeStep)!
   const activeIndex = STEPS.findIndex(step => step.id === activeStep)
 
@@ -66,16 +67,21 @@ export const HowItWorksSection: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    if (isPaused) return
     const timer = setInterval(advanceStep, AUTO_ADVANCE_MS)
     return () => clearInterval(timer)
-  }, [advanceStep])
+  }, [advanceStep, isPaused])
 
   const handleStepClick = (id: string) => {
     setActiveStep(id)
   }
 
   return (
-    <section className="py-28 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <section 
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      className="py-28 bg-gradient-to-br from-slate-50 via-white to-blue-50"
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <span className="text-blue-600 font-semibold uppercase tracking-wider text-sm">How It Works</span>

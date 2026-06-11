@@ -117,7 +117,7 @@ export const AppNavbar: React.FC = () => {
           <div className="flex items-center gap-2 relative z-20">
             <Link to="/" className="flex items-center gap-2 mr-4">
               <div className={cn(
-                "flex gap-1 items-center bg-white/50 p-1 rounded-lg transition-all duration-300",
+                "flex gap-1 items-center bg-transparent p-1 rounded-lg transition-all duration-300",
                 isScrolled ? "opacity-0 w-0 overflow-hidden p-0" : "opacity-100",
                 "hidden md:flex"
               )}>
@@ -148,16 +148,19 @@ export const AppNavbar: React.FC = () => {
             </Link>
           </div>
 
-          <NavItems items={items} isDarkBg={isDarkBgPage} />
+          <NavItems items={items} isDarkBg={isDarkBgPage} isScrolled={isScrolled} />
 
           <div className="flex items-center gap-2">
             {user ? (
               <div className="relative z-[80]">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="flex items-center space-x-2 bg-white/50 hover:bg-white/80 px-3 py-1.5 rounded-full transition-colors"
+                  className={cn(
+                    "flex items-center space-x-2 bg-white/50 hover:bg-white/80 px-3 rounded-full transition-all duration-300",
+                    isScrolled ? "py-0.5" : "py-1.5"
+                  )}
                 >
-                  <Avatar className="h-8 w-8">
+                  <Avatar className={cn("transition-all duration-300", isScrolled ? "h-7 w-7" : "h-8 w-8")}>
                     <AvatarImage
                       src={profileAvatar ? getApiUrl(`/api/profile/picture/${profileAvatar}`) : undefined}
                       alt={user.name}
@@ -208,8 +211,8 @@ export const AppNavbar: React.FC = () => {
               </div>
             ) : (
               <>
-                <NavbarButton href="/login" variant="secondary" className="hidden sm:inline-block">Login</NavbarButton>
-                <NavbarButton href="/register" variant="primary" className="hidden sm:inline-block">Get Started</NavbarButton>
+                <NavbarButton href="/login" variant="secondary" className={cn("hidden sm:inline-block transition-all duration-300", isScrolled ? "py-1" : "py-2")}>Login</NavbarButton>
+                <NavbarButton href="/register" variant="primary" className={cn("hidden sm:inline-block transition-all duration-300", isScrolled ? "py-1" : "py-2")}>Get Started</NavbarButton>
               </>
             )}
 

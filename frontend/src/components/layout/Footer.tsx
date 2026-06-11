@@ -81,19 +81,19 @@ const contactInfo = [
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-white mt-16 w-full place-self-end rounded-t-xl border-t">
-      <div className="container mx-auto px-4 pt-8 pb-6 sm:px-6 lg:px-8 lg:pt-24 lg:pb-12">
+      <div className="container mx-auto px-4 pt-6 pb-4 sm:px-6 lg:px-8 lg:pt-12 lg:pb-6">
         <div className="grid grid-cols-1 gap-4 lg:gap-8 lg:grid-cols-3">
           <div>
             <div className="text-primary flex justify-start gap-2 items-center flex-wrap">
               <img
                 src={LaunchpadLogo}
                 alt="KGP Forge"
-                className="h-16 md:h-28 w-auto object-contain"
+                className="h-12 md:h-20 w-auto object-contain"
               />
               <img
                 src={rmsoeeLogo}
                 alt="RMSOEE IIT Kharagpur"
-                className="h-26 md:h-40 w-auto object-contain"
+                className="h-18 md:h-28 w-auto object-contain"
               />
             </div>
             <div className="mt-4 flex justify-start items-center gap-2">
@@ -120,25 +120,13 @@ export const Footer: React.FC = () => {
               {data.company.description}
             </p>
 
-            <ul className="mt-6 flex justify-start gap-4">
-              {socialLinks.map(({ icon: Icon, label, href }) => (
-                <li key={label}>
-                  <Link
-                    to={href}
-                    className="text-primary hover:text-primary/80 transition"
-                  >
-                    <span className="sr-only">{label}</span>
-                    <Icon className="w-6 h-6" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+
           </div>
 
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:col-span-2">
             <div className="text-left">
               <p className="text-lg font-medium">About Us</p>
-              <ul className="mt-8 space-y-4 text-sm">
+              <ul className="mt-4 space-y-2.5 text-sm">
                 {aboutLinks.map(({ text, href }) => (
                   <li key={text}>
                     <Link
@@ -154,7 +142,7 @@ export const Footer: React.FC = () => {
 
             <div className="text-left">
               <p className="text-lg font-medium">Platform</p>
-              <ul className="mt-8 space-y-4 text-sm">
+              <ul className="mt-4 space-y-2.5 text-sm">
                 {platformLinks.map(({ text, href }) => (
                   <li key={text}>
                     <Link
@@ -170,7 +158,7 @@ export const Footer: React.FC = () => {
 
             <div className="text-left">
               <p className="text-lg font-medium">Helpful Links</p>
-              <ul className="mt-8 space-y-4 text-sm">
+              <ul className="mt-4 space-y-2.5 text-sm">
                 {helpfulLinks.map(({ text, href }) => (
                   <li key={text}>
                     <Link
@@ -186,7 +174,7 @@ export const Footer: React.FC = () => {
 
             <div className="text-left">
               <p className="text-lg font-medium">Contact Us</p>
-              <ul className="mt-8 space-y-4 text-sm">
+              <ul className="mt-4 space-y-2.5 text-sm">
                 {contactInfo.map(({ icon: Icon, text, isAddress }) => (
                   <li key={text}>
                     <div className="flex items-center justify-center gap-1.5 sm:justify-start">
@@ -208,15 +196,28 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-12 border-t pt-6">
-          <div className="text-center sm:flex sm:justify-between sm:text-left">
-            <p className="text-sm text-muted-foreground">
-              <span className="block sm:inline">All rights reserved.</span>
-            </p>
+        <div className="mt-8 border-t pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="hidden sm:block w-1/4"></div>
 
-            <p className="text-muted-foreground mt-4 text-sm transition sm:order-first sm:mt-0">
-              &copy; {new Date().getFullYear()} {data.company.name}
-            </p>
+            <div className="text-center w-full sm:w-1/2">
+              <p className="text-sm text-muted-foreground">
+                &copy; {new Date().getFullYear()} {data.company.name}. All rights reserved.
+              </p>
+            </div>
+
+            <div className="flex justify-center sm:justify-end gap-4 w-full sm:w-1/4">
+              {socialLinks.map(({ icon: Icon, label, href }) => (
+                <Link
+                  key={label}
+                  to={href}
+                  className="text-muted-foreground hover:text-primary transition"
+                >
+                  <span className="sr-only">{label}</span>
+                  <Icon className="w-5 h-5" />
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

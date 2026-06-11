@@ -50,13 +50,12 @@ export const LandingPage: React.FC = () => {
         <div className="container mx-auto px-4 w-full z-20 flex justify-center mt-[-4vh] lg:-mt-[6vh]">
           <div className="max-w-5xl mx-auto text-center px-0">
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent">
-              What is{' '}
               <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent animate-pulse">
-                KGP Forge
+                KGP forge
               </span>
             </h1>
             <p className="text-sm sm:text-base md:text-xl text-gray-600 mb-8 max-w-[90vw] md:max-w-2xl mx-auto leading-relaxed break-words">
-              We help founders get work done by connecting them with talented students at a fair cost — and give students real-world experience while they learn and earn.
+              For Kgpians By Kgpians &rarr; One in all platform for investor, student, mentor and Founder
             </p>
             <div className="flex justify-center">
               <Button size="lg" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-lg shadow-blue-200/30 border-0" asChild>
