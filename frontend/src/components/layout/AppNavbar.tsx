@@ -130,7 +130,7 @@ export const AppNavbar: React.FC = () => {
                 <img
                   src={rmsoeeLogo}
                   alt="RMSOEE IIT Kharagpur"
-                  className="h-24 md:h-28 w-auto max-w-none object-contain"
+                  className="h-10 md:h-12 w-auto max-w-none object-contain"
                 />
                 <img
                   src="/e_cell_long.png"

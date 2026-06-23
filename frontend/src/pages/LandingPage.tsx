@@ -47,7 +47,7 @@ export const LandingPage: React.FC = () => {
         <div className="hidden md:block absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full opacity-25 animate-pulse"></div>
         <div className="hidden md:block absolute top-60 right-1/3 w-8 h-8 bg-gradient-to-r from-blue-200 to-blue-300 rounded-full opacity-40 animate-bounce"></div>
 
-        <div className="container mx-auto px-4 w-full z-20 flex justify-center mt-[-4vh] lg:-mt-[6vh]">
+        <div className="container mx-auto px-4 w-full z-20 flex justify-center mt-12 lg:mt-20">
           <div className="max-w-5xl mx-auto text-center px-0">
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent">
               <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent animate-pulse">
