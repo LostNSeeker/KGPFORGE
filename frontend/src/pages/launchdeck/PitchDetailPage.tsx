@@ -183,13 +183,21 @@ export const PitchDetailPage: React.FC = () => {
 
             {/* Right: Interest Card */}
             <div className="hidden lg:block">
-              <InterestCard
-                pitchId={pitch.id}
-                hasInterest={hasInterest}
-                interestCount={pitch.interest_count}
-                isLoggedIn={!!user}
-                onSubmitInterest={handleSubmitInterest}
-              />
+              {!isOwner ? (
+                <InterestCard
+                  pitchId={pitch.id}
+                  hasInterest={hasInterest}
+                  interestCount={pitch.interest_count}
+                  isLoggedIn={!!user}
+                  onSubmitInterest={handleSubmitInterest}
+                />
+              ) : (
+                <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+                  <h3 className="font-bold text-gray-900 mb-2">Pitch Interest</h3>
+                  <p className="text-gray-600 mb-4 text-sm">You have <span className="font-bold text-indigo-600">{pitch.interest_count}</span> interested investors!</p>
+                  <p className="text-xs text-gray-500">Platform Admins will review investor requests and reach out to connect you.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -421,13 +429,15 @@ export const PitchDetailPage: React.FC = () => {
 
           {/* Right Column: Sticky Interest Card (mobile) + Sidebar */}
           <div className="lg:hidden">
-            <InterestCard
-              pitchId={pitch.id}
-              hasInterest={hasInterest}
-              interestCount={pitch.interest_count}
-              isLoggedIn={!!user}
-              onSubmitInterest={handleSubmitInterest}
-            />
+            {!isOwner && (
+              <InterestCard
+                pitchId={pitch.id}
+                hasInterest={hasInterest}
+                interestCount={pitch.interest_count}
+                isLoggedIn={!!user}
+                onSubmitInterest={handleSubmitInterest}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -186,7 +186,20 @@ def get_dashboard_stats(user_id, role):
                 'pending_mentorship_requests': pending_mentorships,
                 'active_services': my_services
             }
-        else: # investor, admin
+        elif role == 'investor':
+            interests_submitted = conn.execute('SELECT COUNT(*) as c FROM pitch_interests WHERE investor_id = ?', (user_id,)).fetchone()['c']
+            upcoming_events = conn.execute('''
+                SELECT COUNT(*) as c FROM event_enrollments ee
+                JOIN events e ON ee.event_id = e.id
+                WHERE ee.user_id = ? AND e.date >= date('now')
+            ''', (user_id,)).fetchone()['c']
+            total_startups = conn.execute('SELECT COUNT(*) as c FROM pitches WHERE status = "published"').fetchone()['c']
+            return {
+                'interests_submitted': interests_submitted,
+                'upcoming_events': upcoming_events,
+                'startups_viewed': total_startups
+            }
+        else: # admin
             return {}
     finally:
         conn.close()

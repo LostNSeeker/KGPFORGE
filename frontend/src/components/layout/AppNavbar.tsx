@@ -100,7 +100,7 @@ export const AppNavbar: React.FC = () => {
 
   const items = getNavigationItems()
   const darkBackgroundRoutes = new Set(['/launchdeck', '/resources', '/events'])
-  const isDarkBgPage = !isScrolled && (darkBackgroundRoutes.has(location.pathname) || location.pathname.startsWith('/events/'))
+  const isDarkBgPage = !isScrolled && (darkBackgroundRoutes.has(location.pathname) || location.pathname.startsWith('/events/') || location.pathname.startsWith('/launchdeck/pitch/'))
 
   return (
     <div className="relative w-full">

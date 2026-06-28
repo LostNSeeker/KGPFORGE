@@ -18,6 +18,9 @@ interface DashboardStats {
   pitches_count: number
   interests_count: number
   mentorship_requests_count: number
+  interests_submitted?: number
+  upcoming_events?: number
+  startups_viewed?: number
 }
 
 interface RecentActivity {
@@ -224,8 +227,8 @@ export const AlumniDashboard: React.FC = () => {
         return (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <StatCard
-              title="Startups Viewed"
-              value="-"
+              title="Startups on Platform"
+              value={stats.startups_viewed || 0}
               subtitle="Browse LaunchDeck"
               icon={<Rocket className="h-5 w-5 text-emerald-600" />}
               gradientColors="from-emerald-100 to-emerald-200 group-hover:from-emerald-200 group-hover:to-emerald-300"
@@ -234,7 +237,7 @@ export const AlumniDashboard: React.FC = () => {
             />
             <StatCard
               title="Interests Submitted"
-              value="-"
+              value={stats.interests_submitted || 0}
               subtitle="Startup interests"
               icon={<TrendingUp className="h-5 w-5 text-teal-600" />}
               gradientColors="from-teal-100 to-teal-200 group-hover:from-teal-200 group-hover:to-teal-300"
@@ -243,7 +246,7 @@ export const AlumniDashboard: React.FC = () => {
             />
             <StatCard
               title="Upcoming Events"
-              value="-"
+              value={stats.upcoming_events || 0}
               subtitle="Events & meetups"
               icon={<Calendar className="h-5 w-5 text-blue-600" />}
               gradientColors="from-blue-100 to-blue-200 group-hover:from-blue-200 group-hover:to-blue-300"
