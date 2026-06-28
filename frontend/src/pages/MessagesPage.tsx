@@ -623,7 +623,7 @@ export const MessagesPage: React.FC = () => {
                         {selectedConversation.other_user_name}
                       </h3>
                       <p className="text-xs md:text-sm text-gray-500">
-                        {selectedConversation.other_user_role === 'alumni' ? 'Founder' : 'Student'}
+                        {selectedConversation.other_user_role === 'alumni' ? 'Founder' : selectedConversation.other_user_role.charAt(0).toUpperCase() + selectedConversation.other_user_role.slice(1)}
                       </p>
                       {selectedConversation.other_user_role !== 'alumni' && (() => {
                         const yr = availableUsers.find(u => u.id === selectedConversation.other_user_id)?.graduation_year
