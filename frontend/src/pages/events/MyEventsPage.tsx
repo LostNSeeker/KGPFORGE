@@ -165,7 +165,13 @@ export const MyEventsPage: React.FC = () => {
                                                 {event.location && (
                                                     <div className="flex items-center gap-2 text-sm text-slate-600">
                                                         <MapPin className="h-4 w-4 text-orange-500" />
-                                                        <span className="line-clamp-1">{event.location}</span>
+                                                        {event.location.startsWith('http') ? (
+                                                            <a href={event.location} target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:text-orange-700 underline truncate" onClick={(e) => e.stopPropagation()}>
+                                                                Online Meeting Link
+                                                            </a>
+                                                        ) : (
+                                                            <span className="line-clamp-1">{event.location}</span>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>

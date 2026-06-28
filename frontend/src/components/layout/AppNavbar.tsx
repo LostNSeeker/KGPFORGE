@@ -117,8 +117,9 @@ export const AppNavbar: React.FC = () => {
           <div className="flex items-center gap-2 relative z-20">
             <Link to="/" className="flex items-center gap-2 mr-4">
               <div className={cn(
-                "flex gap-1 items-center bg-transparent p-1 rounded-lg transition-all duration-300",
+                "flex gap-2 items-center p-1 rounded-lg transition-all duration-300",
                 isScrolled ? "opacity-0 w-0 overflow-hidden p-0" : "opacity-100",
+                isDarkBgPage ? "bg-white/90 shadow-sm px-2" : "bg-transparent",
                 "hidden md:flex"
               )}>
 
@@ -143,7 +144,10 @@ export const AppNavbar: React.FC = () => {
               <img
                 src={kgpForgeLogo}
                 alt="KGP Forge"
-                className="h-14 object-contain md:hidden flex-shrink-0"
+                className={cn(
+                  "h-14 object-contain md:hidden flex-shrink-0 rounded-lg",
+                  isDarkBgPage ? "bg-white/90 p-1" : ""
+                )}
               />
             </Link>
           </div>

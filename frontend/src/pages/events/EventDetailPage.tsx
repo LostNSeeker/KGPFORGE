@@ -83,11 +83,15 @@ export const EventDetailPage: React.FC = () => {
             
             if (res.ok) {
                 toast.success('Successfully registered!')
+                // Optimistically update the state
+                setEvent(prev => prev ? {...prev, is_enrolled: true, attendee_count: (prev.attendee_count || 0) + 1} : null);
+                
                 const eventRes = await fetch(getApiUrl(`/api/events/${id}`), {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
                 if (eventRes.ok) {
-                    setEvent(await eventRes.json())
+                    const updatedEvent = await eventRes.json();
+                    setEvent({...updatedEvent, is_enrolled: true}); // Ensure it stays true
                 }
             } else {
                 const error = await res.json()
@@ -294,7 +298,13 @@ export const EventDetailPage: React.FC = () => {
                                         <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
                                             <MapPin className="h-5 w-5 text-purple-400" />
                                         </div>
-                                        <p className="text-white font-medium">{event.location}</p>
+                                        {event.location && event.location.startsWith('http') ? (
+                                            <a href={event.location} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 font-medium underline break-all">
+                                                Join Online Meeting
+                                            </a>
+                                        ) : (
+                                            <p className="text-white font-medium">{event.location}</p>
+                                        )}
                                     </div>
 
                                     {event.speaker_name && (
@@ -327,7 +337,7 @@ export const EventDetailPage: React.FC = () => {
                                                 disabled={enrolling}
                                             >
                                                 {enrolling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                                BUY TICKET
+                                                Register
                                             </Button>
                                         )}
                                     </div>

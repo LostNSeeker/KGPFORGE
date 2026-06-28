@@ -12,7 +12,10 @@ def get_optional_user_id():
         try:
             token = auth_header.split(" ")[1]
             payload = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=["HS256"])
-            return payload['sub']
+            identity = payload.get('sub')
+            if identity and isinstance(identity, str) and identity.startswith('user_'):
+                return int(identity.replace('user_', ''))
+            return identity
         except:
             pass
     return None

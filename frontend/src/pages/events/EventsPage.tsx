@@ -144,6 +144,7 @@ export const EventsPage: React.FC = () => {
             
             if (res.ok) {
                 toast.success('Successfully registered!')
+                setEvents(prev => prev.map(e => e.id === eventId ? { ...e, is_enrolled: true, attendee_count: (e.attendee_count || 0) + 1 } : e))
                 fetchEvents()
             } else {
                 const error = await res.json()
@@ -202,17 +203,23 @@ export const EventsPage: React.FC = () => {
                         <div>
                             <p className="text-purple-400 mb-4 uppercase tracking-wider text-sm">MANAGE YOUR EVENTS WITH</p>
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                                The Ultimate Platform for Planning and Promoting Successful Events
+                                Plan, Promote, and Attend Extraordinary Events
                             </h1>
                             <p className="text-gray-400 text-lg mb-8">
                                 Join thousands of event organizers and attendees. Discover, create, and manage amazing events with our comprehensive platform.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8">
-                                    Get Started
-                                </Button>
-                                <Button size="lg" variant="outline" className="border-2 border-purple-400 text-purple-300 hover:bg-purple-500/20 hover:border-purple-300 hover:text-white">
-                                    Learn More
+                                {token ? (
+                                    <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8" onClick={() => document.getElementById('latest-events')?.scrollIntoView({ behavior: 'smooth' })}>
+                                        Explore Events
+                                    </Button>
+                                ) : (
+                                    <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8" asChild>
+                                        <Link to="/register">Get Started</Link>
+                                    </Button>
+                                )}
+                                <Button size="lg" variant="outline" className="border-2 border-purple-400 text-purple-300 hover:bg-purple-500/20 hover:border-purple-300 hover:text-white" asChild>
+                                    <Link to="/about">Learn More</Link>
                                 </Button>
                             </div>
                         </div>
@@ -239,7 +246,7 @@ export const EventsPage: React.FC = () => {
                                         <Calendar className="h-6 w-6 text-white" />
                                     </div>
                                     <div>
-                                        <p className="text-white font-bold text-xl">{events.length}+</p>
+                                        <p className="text-white font-bold text-xl">{events.filter(e => !isPastEvent(e.date)).length}</p>
                                         <p className="text-gray-400 text-sm">Upcoming Events</p>
                                     </div>
                                 </div>
@@ -311,7 +318,7 @@ export const EventsPage: React.FC = () => {
             )}
 
             {/* Latest Events Section - Light Background */}
-            <section className="py-20 bg-gray-50">
+            <section id="latest-events" className="py-20 bg-gray-50">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <span className="text-purple-600 uppercase tracking-wider text-sm font-medium">UPCOMING</span>
@@ -510,9 +517,15 @@ export const EventsPage: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                        <Button size="lg" className="bg-purple-600 hover:bg-purple-700 px-8" asChild>
-                            <Link to="/register">Get Started</Link>
-                        </Button>
+                        {token ? (
+                            <Button size="lg" className="bg-purple-600 hover:bg-purple-700 px-8" asChild>
+                                <Link to="/dashboard">Go to Dashboard</Link>
+                            </Button>
+                        ) : (
+                            <Button size="lg" className="bg-purple-600 hover:bg-purple-700 px-8" asChild>
+                                <Link to="/register">Get Started</Link>
+                            </Button>
+                        )}
                         <Button size="lg" variant="outline" className="border-2 border-purple-400 text-purple-300 hover:bg-purple-500/30 hover:text-white px-8" asChild>
                             <Link to="/about">Learn More</Link>
                         </Button>
