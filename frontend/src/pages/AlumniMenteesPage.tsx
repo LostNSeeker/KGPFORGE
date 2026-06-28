@@ -132,7 +132,7 @@ export const AlumniMenteesPage: React.FC = () => {
   const processedRequests = items.filter(r => r.status !== 'pending')
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen pt-32 pb-12">
       <div className="container mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Mentee Requests</h1>

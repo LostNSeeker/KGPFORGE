@@ -90,7 +90,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ userId, isOpen, onCl
   const fetchProfile = async () => {
     setLoading(true)
     try {
-      const res = await fetch(getApiUrl(`/api/users/${userId}/profile`), {
+      const res = await fetch(getApiUrl(`/api/profile/${userId}`), {
         headers: { Authorization: `Bearer ${token}` }
       })
       if (res.ok) {
@@ -117,8 +117,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ userId, isOpen, onCl
     if (!token) return
     try {
       const [appliedRes, completedRes] = await Promise.all([
-        fetch(getApiUrl(`/api/users/${userId}/applied-projects`), { headers: { Authorization: `Bearer ${token}` } }),
-        fetch(getApiUrl(`/api/users/${userId}/completed-projects`), { headers: { Authorization: `Bearer ${token}` } })
+        fetch(getApiUrl(`/api/profile/${userId}/applied-projects`), { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(getApiUrl(`/api/profile/${userId}/completed-projects`), { headers: { Authorization: `Bearer ${token}` } })
       ])
       if (appliedRes.ok) {
         const data = await appliedRes.json()

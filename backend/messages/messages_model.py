@@ -140,6 +140,7 @@ def get_conversations(user_id):
         conn.close()
 
 def create_conversation(user_id, other_user_id):
+    other_user_id = int(other_user_id)
     conn = get_db_connection()
     try:
         existing = conn.execute('''

@@ -56,7 +56,7 @@ export const AlumniDashboard: React.FC = () => {
       if (!token) return
       
       try {
-        const statsRes = await fetch(getApiUrl('/api/alumni/dashboard-stats'), {
+        const statsRes = await fetch(getApiUrl('/api/profile/dashboard-stats'), {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (statsRes.ok) {

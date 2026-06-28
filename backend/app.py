@@ -688,6 +688,7 @@ def init_db():
             user1_id INTEGER NOT NULL,
             user2_id INTEGER NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user1_id) REFERENCES users (id),
             FOREIGN KEY (user2_id) REFERENCES users (id),
             UNIQUE(user1_id, user2_id)

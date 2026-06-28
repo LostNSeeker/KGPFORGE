@@ -37,6 +37,44 @@ def get_user_profile_by_id(target_user_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@profile_bp.route('/<int:target_user_id>/applied-projects', methods=['GET'])
+@jwt_required()
+def get_user_applied_projects(target_user_id):
+    from database import get_db_connection
+    conn = get_db_connection()
+    try:
+        query = '''
+            SELECT p.* 
+            FROM projects p 
+            JOIN project_applications a ON p.id = a.project_id 
+            WHERE a.user_id = ?
+        '''
+        projects = conn.execute(query, (target_user_id,)).fetchall()
+        return jsonify([dict(p) for p in projects]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        conn.close()
+
+@profile_bp.route('/<int:target_user_id>/completed-projects', methods=['GET'])
+@jwt_required()
+def get_user_completed_projects(target_user_id):
+    from database import get_db_connection
+    conn = get_db_connection()
+    try:
+        query = '''
+            SELECT p.* 
+            FROM projects p 
+            JOIN project_applications a ON p.id = a.project_id 
+            WHERE a.user_id = ? AND a.status = 'completed'
+        '''
+        projects = conn.execute(query, (target_user_id,)).fetchall()
+        return jsonify([dict(p) for p in projects]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        conn.close()
+
 @profile_bp.route('/', methods=['PUT'])
 @jwt_required()
 def update_profile():

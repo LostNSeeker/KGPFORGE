@@ -285,6 +285,12 @@ export const MessagesPage: React.FC = () => {
   const getRoleBadge = (role: string) => {
     if (role === 'alumni') {
       return <Badge variant="default" className="text-xs bg-blue-600">Founder</Badge>
+    } else if (role === 'admin') {
+      return <Badge variant="default" className="text-xs bg-purple-600">Admin</Badge>
+    } else if (role === 'mentor') {
+      return <Badge variant="default" className="text-xs bg-amber-600">Mentor</Badge>
+    } else if (role === 'investor') {
+      return <Badge variant="default" className="text-xs bg-indigo-600">Investor</Badge>
     } else {
       return <Badge variant="secondary" className="text-xs bg-green-600 text-white">Student</Badge>
     }
@@ -357,8 +363,8 @@ export const MessagesPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-24">
-      <div className="flex flex-col md:flex-row h-[calc(100vh-6rem)]">
+    <div className="min-h-screen bg-gray-100 pt-32">
+      <div className="flex flex-col md:flex-row h-[calc(100vh-8rem)]">
         {/* Left Sidebar - Conversations List */}
         <div className={`${
           selectedConversation ? 'hidden md:flex' : 'flex'
@@ -462,7 +468,7 @@ export const MessagesPage: React.FC = () => {
                         ) : (
                           <>
                             <p className="text-xs md:text-sm text-gray-500 truncate">
-                              {userObj.department || 'Student'}
+                              {userObj.department || (userObj.role === 'student' ? 'Student' : userObj.role.charAt(0).toUpperCase() + userObj.role.slice(1))}
                             </p>
                             {!!userObj.graduation_year && (
                               <p className="text-xs md:text-sm text-gray-500 truncate">Class of {userObj.graduation_year}</p>
@@ -524,13 +530,7 @@ export const MessagesPage: React.FC = () => {
                             <p className="font-medium text-gray-900 truncate text-sm md:text-base">
                               {conversation.other_user_name}
                             </p>
-                            <span className={`text-xs px-1.5 py-0.5 rounded ${
-                              conversation.other_user_role === 'alumni' 
-                                ? 'bg-blue-100 text-blue-700' 
-                                : 'bg-green-100 text-green-700'
-                            }`}>
-                              {conversation.other_user_role === 'alumni' ? 'Founder' : 'Student'}
-                            </span>
+                            {getRoleBadge(conversation.other_user_role)}
                           </div>
                           {conversation.unread_count > 0 && (
                             <Badge variant="destructive" className="text-xs">
