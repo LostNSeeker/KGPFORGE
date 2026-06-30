@@ -188,6 +188,15 @@ def upsert_student_profile():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@launchpad_bp.route('/launchpad/admin/student-profiles', methods=['GET'])
+@jwt_required()
+def get_admin_student_profiles():
+    if not launchpad_model.is_admin(get_user_id_from_jwt()): return jsonify({'error': 'Admin required'}), 403
+    try:
+        return jsonify(launchpad_model.get_all_student_service_profiles()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @launchpad_bp.route('/launchpad/my-allotments', methods=['GET'])
 @jwt_required()
 def get_my_allotments():

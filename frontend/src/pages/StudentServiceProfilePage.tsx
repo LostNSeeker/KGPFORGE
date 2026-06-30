@@ -50,6 +50,7 @@ export const StudentServiceProfilePage: React.FC = () => {
   const [cvUploading, setCvUploading] = useState(false)
   const [agreeingId, setAgreeingId] = useState<number | null>(null)
   const [skillsDropdownOpen, setSkillsDropdownOpen] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const skillsDropdownRef = useRef<HTMLDivElement>(null)
   const [formData, setFormData] = useState({
     resume_url: '',
@@ -205,6 +206,7 @@ export const StudentServiceProfilePage: React.FC = () => {
       })
       if (res.ok) {
         toast.success('Profile saved successfully')
+        setIsEditing(false)
         fetchProfile()
       } else {
         const err = await res.json()
@@ -265,16 +267,25 @@ export const StudentServiceProfilePage: React.FC = () => {
           <div className="flex justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
           </div>
-        ) : hasSubmittedProfile ? (
+        ) : hasSubmittedProfile && !isEditing ? (
           <div className="space-y-6">
             <Card className="shadow-lg border-0 bg-white/90">
               <CardContent className="pt-6">
-                <div className="flex items-center gap-3 text-gray-700">
-                  <Clock className="h-5 w-5 text-amber-600" />
-                  <div>
-                    <p className="font-medium">Profile submitted</p>
-                    <p className="text-sm text-gray-500">Status: Pending — we&apos;ll match you when a service fits.</p>
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <Clock className="h-5 w-5 text-amber-600" />
+                    <div>
+                      <p className="font-medium text-lg text-gray-900">Profile Submitted Successfully</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        <strong>What happens next?</strong> Platform Admins and Alumni providers will review your profile. 
+                        If your skills match an available service, you will be allotted to it. Check back here to see if you have been 
+                        selected for any service and click "Agree" to proceed!
+                      </p>
+                    </div>
                   </div>
+                  <Button variant="outline" onClick={() => setIsEditing(true)}>
+                    Edit Profile
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -345,6 +356,15 @@ export const StudentServiceProfilePage: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-8">
+            <Card className="shadow-lg border-0 bg-white/90 mb-6">
+              <CardContent className="pt-6">
+                <p className="text-sm text-gray-700">
+                  <strong>What happens after you submit?</strong> Your profile will be added to the Launchpad directory. 
+                  Admins and Alumni will review your skills, experience, and CV. If you are matched to a service, you will 
+                  see it appear on this page under "Selected for a service". You can then choose to agree and connect with the provider!
+                </p>
+              </CardContent>
+            </Card>
             <div className="flex justify-center">
               <CloudWatchForm className="w-full max-w-6xl">
                 <form onSubmit={handleSubmitProfile} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-4">
@@ -475,11 +495,16 @@ export const StudentServiceProfilePage: React.FC = () => {
                       onChange={(e) => setFormData((f) => ({ ...f, other_info: e.target.value }))}
                     />
                   </div>
-                  <div className="md:col-span-2 xl:col-span-3">
-                    <Button type="submit" className="mt-2 w-full bg-blue-600 hover:bg-blue-700" disabled={saving}>
+                  <div className="md:col-span-2 xl:col-span-3 flex gap-3">
+                    <Button type="submit" className="mt-2 flex-1 bg-blue-600 hover:bg-blue-700" disabled={saving}>
                       {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                      Submit profile
+                      {hasSubmittedProfile ? 'Update Profile' : 'Submit Profile'}
                     </Button>
+                    {hasSubmittedProfile && (
+                      <Button type="button" variant="outline" className="mt-2" onClick={() => setIsEditing(false)}>
+                        Cancel
+                      </Button>
+                    )}
                   </div>
                 </form>
               </CloudWatchForm>

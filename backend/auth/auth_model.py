@@ -77,7 +77,7 @@ def verify_admin_otp(user_id, otp):
 def get_user_by_email(email):
     conn = get_db_connection()
     try:
-        user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
+        user = conn.execute('SELECT * FROM users WHERE LOWER(email) = LOWER(?)', (email,)).fetchone()
         return dict(user) if user else None
     finally:
         conn.close()

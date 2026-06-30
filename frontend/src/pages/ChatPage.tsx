@@ -157,7 +157,7 @@ export const ChatPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
+    <div className="min-h-screen pt-24 bg-gradient-to-br from-slate-50 via-white to-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">

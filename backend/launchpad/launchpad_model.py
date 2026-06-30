@@ -225,6 +225,24 @@ def get_student_service_profile(user_id):
     finally:
         conn.close()
 
+def get_all_student_service_profiles():
+    conn = get_db_connection()
+    try:
+        rows = conn.execute('''
+            SELECT ssp.*, u.name as user_name, u.email as user_email
+            FROM student_service_profiles ssp
+            JOIN users u ON ssp.user_id = u.id
+            ORDER BY ssp.updated_at DESC
+        ''').fetchall()
+        profiles = []
+        for r in rows:
+            prof = dict(r)
+            prof['user'] = {'id': r['user_id'], 'name': r['user_name'], 'email': r['user_email']}
+            profiles.append(prof)
+        return profiles
+    finally:
+        conn.close()
+
 def upsert_student_service_profile(user_id, data):
     conn = get_db_connection()
     try:

@@ -35,6 +35,8 @@ from messages.messages_controller import messages_bp
 app.register_blueprint(messages_bp, url_prefix='/api')
 from resources.resources_controller import resources_bp
 app.register_blueprint(resources_bp, url_prefix='/api')
+from projects.projects_controller import projects_bp
+app.register_blueprint(projects_bp, url_prefix='/api')
 from admin.admin_controller import admin_bp
 app.register_blueprint(admin_bp, url_prefix='/api/admin')
 from sitemap.sitemap_controller import sitemap_bp

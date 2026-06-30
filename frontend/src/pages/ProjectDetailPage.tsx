@@ -241,7 +241,7 @@ export const ProjectDetailPage: React.FC = () => {
 
     setIsApplying(true)
     try {
-      const response = await fetch(getApiUrl('/api/project-applications'), {
+      const response = await fetch(getApiUrl(`/api/projects/${project.id}/applications`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

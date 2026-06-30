@@ -154,7 +154,7 @@ export const ProjectsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen py-12 relative">
+    <div className="min-h-screen pt-24 pb-12 relative">
       {/* Grid Background Pattern */}
       <BGPattern 
         variant="grid" 

@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { Loader2, Briefcase, TrendingUp, Clock, CheckCircle, MessageCircle, GraduationCap, Calendar, Wrench, Upload, IdCard } from 'lucide-react'
+import { Loader2, Briefcase, TrendingUp, Clock, CheckCircle, MessageCircle, GraduationCap, Calendar, Wrench, Upload, IdCard, Compass } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getApiUrl } from '../config'
 import { toast } from 'react-hot-toast'
@@ -17,13 +17,13 @@ interface DashboardStats {
 
 export const StudentDashboard: React.FC = () => {
   const { token, user, isLoading } = useAuth()
-  // stats displayed in UI; setStats reserved for future dashboard stats fetch
-  const [stats] = useState<DashboardStats>({
+  const [stats, setStats] = useState<DashboardStats>({
     applied_projects: 0,
     accepted_projects: 0,
     pending_applications: 0
   })
-  const [, setLoading] = useState(true)
+  const [recentActivities, setRecentActivities] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const [rollNumber, setRollNumber] = useState('')
   const [idCardFile, setIdCardFile] = useState<File | null>(null)
   const [idCardPreview, setIdCardPreview] = useState<string | null>(null)
@@ -35,13 +35,25 @@ export const StudentDashboard: React.FC = () => {
       if (!token) return
 
       try {
-        const verRes = await fetch(getApiUrl('/api/profile/verification'), {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const [verRes, reqRes] = await Promise.all([
+          fetch(getApiUrl('/api/profile/verification'), { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(getApiUrl('/api/launchpad/my-requests'), { headers: { Authorization: `Bearer ${token}` } })
+        ])
+        
         if (verRes.ok) {
           const verData = await verRes.json()
           if (verData.roll_number) setRollNumber(verData.roll_number)
           if (verData.id_card_image) setExistingIdCard(verData.id_card_image)
+        }
+
+        if (reqRes.ok) {
+          const requests = await reqRes.json()
+          setStats({
+            applied_projects: requests.length,
+            accepted_projects: requests.filter((r: any) => r.status === 'completed' || r.status === 'in_progress').length,
+            pending_applications: requests.filter((r: any) => r.status === 'pending' || r.status === 'contacted').length
+          })
+          setRecentActivities(requests.slice(0, 3)) // Get latest 3
         }
       } finally {
         setLoading(false)
@@ -135,7 +147,13 @@ export const StudentDashboard: React.FC = () => {
             <Button asChild className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-orange-100 to-red-200 hover:from-orange-200 hover:to-red-300 text-orange-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
               <Link to="/student-service-profile">
                 <Wrench className="h-6 w-6 mb-2" />
-                <span className="text-sm font-semibold">Applied to help</span>
+                <span className="text-sm font-semibold">Your Profile</span>
+              </Link>
+            </Button>
+            <Button asChild className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 hover:from-blue-200 hover:to-indigo-300 text-blue-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+              <Link to="/projects">
+                <Compass className="h-6 w-6 mb-2" />
+                <span className="text-sm font-semibold">Explore projects</span>
               </Link>
             </Button>
             <Button asChild className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-teal-100 to-cyan-200 hover:from-teal-200 hover:to-cyan-300 text-teal-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
@@ -168,14 +186,44 @@ export const StudentDashboard: React.FC = () => {
               <CardDescription className="text-gray-600">Your latest project applications</CardDescription>
             </CardHeader>
             <CardContent className="relative z-10">
-              <div className="text-center py-8">
-                <TrendingUp className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">No recent activity</p>
-                <p className="text-sm text-gray-400 mt-1">Start by browsing projects or your applications.</p>
-                <Button asChild variant="outline" className="mt-4">
-                  <Link to="/student/applications">View My Applications</Link>
-                </Button>
-              </div>
+              {recentActivities.length > 0 ? (
+                <div className="space-y-4 pt-4">
+                  {recentActivities.map((activity, idx) => (
+                    <div key={idx} className="flex items-start gap-4 p-4 rounded-lg border border-gray-100 bg-gray-50/50 hover:bg-gray-50 transition-colors">
+                      <div className="p-2 rounded-full bg-blue-100 text-blue-600">
+                        <CheckCircle className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900">{activity.project_type}</h4>
+                        <p className="text-sm text-gray-500 line-clamp-1">{activity.description}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${
+                          activity.status === 'completed' ? 'bg-green-100 text-green-700' :
+                          activity.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {activity.status.replace('_', ' ')}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="text-center pt-2">
+                    <Button asChild variant="outline" className="text-sm">
+                      <Link to="/student/applications">View All Applications</Link>
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <TrendingUp className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500">No recent activity</p>
+                  <p className="text-sm text-gray-400 mt-1">Start by browsing projects or your applications.</p>
+                  <Button asChild variant="outline" className="mt-4">
+                    <Link to="/student/applications">View My Applications</Link>
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
